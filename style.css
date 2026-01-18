@@ -1,0 +1,633 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+/* Header */
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px 40px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* Main App Layout */
+.main-app {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    min-height: 700px;
+}
+
+/* Left Panel */
+.left-panel {
+    background: #f8f9fa;
+    border-right: 1px solid #e9ecef;
+    padding: 30px;
+}
+
+.create-new-section {
+    margin-bottom: 30px;
+}
+
+.create-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.create-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+}
+
+.saved-lists-section h3 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Updated Saved Lists Section */
+.saved-list-item {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 4px solid #667eea;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    position: relative; /* Add this */
+    min-height: 100px; /* Add minimum height */
+}
+
+/* Updated List Actions */
+.list-actions {
+    display: flex;
+    gap: 8px; /* Reduced gap */
+    margin-top: 10px;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+}
+
+.action-btn-small {
+    padding: 6px 12px; /* Reduced padding */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem; /* Slightly smaller font */
+    display: flex;
+    align-items: center;
+    gap: 4px; /* Reduced gap */
+    transition: all 0.2s ease;
+    white-space: nowrap; /* Prevent text breaking */
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+    .saved-list-item {
+        padding: 12px;
+    }
+    
+    .list-actions {
+        flex-direction: column; /* Stack buttons vertically on mobile */
+    }
+    
+    .action-btn-small {
+        width: 100%;
+        justify-content: center;
+        padding: 8px;
+    }
+}
+
+/* Ensure saved lists container scrolls properly */
+#savedListsContainer {
+    max-height: 550px;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-right: -10px; /* Compensate for scrollbar */
+}
+
+/* Smooth scrolling */
+#savedListsContainer::-webkit-scrollbar {
+    width: 6px;
+}
+
+#savedListsContainer::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+#savedListsContainer::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+#savedListsContainer::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+/* Right Panel */
+.right-panel {
+    padding: 30px;
+    background: white;
+}
+
+/* Welcome Section */
+.welcome-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.welcome-content {
+    text-align: center;
+    max-width: 500px;
+}
+
+.welcome-content i {
+    font-size: 4rem;
+    color: #667eea;
+    margin-bottom: 20px;
+}
+
+.welcome-content h2 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.welcome-content p {
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.features {
+    text-align: left;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 25px 0;
+}
+
+.features i {
+    font-size: 1rem;
+    color: #4CAF50;
+    margin-right: 10px;
+}
+
+/* Rename button style */
+.btn-rename {
+    background: #6f42c1;
+    color: white;
+}
+
+/* Update saved list actions for 4 buttons */
+.list-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.action-btn-small {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+/* Update saved list item height to accommodate 4 buttons */
+.saved-list-item {
+    min-height: 120px;
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+    .list-actions {
+        flex-direction: column;
+    }
+    
+    .action-btn-small {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .saved-list-item {
+        min-height: 150px;
+    }
+}
+
+/* List Creation Section */
+.current-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.current-list-header h2 {
+    color: #333;
+    font-size: 1.8rem;
+}
+
+.btn-small {
+    padding: 8px 15px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s ease;
+}
+
+.btn-small:hover {
+    background: #5a6268;
+}
+
+/* Input Section */
+.input-section {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.input-group {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 15px;
+    align-items: center;
+}
+
+.autocomplete-container {
+    position: relative;
+}
+
+#itemInput, #quantityInput, #unitSelect {
+    padding: 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 100%;
+    transition: border-color 0.3s;
+}
+
+#itemInput:focus, #quantityInput:focus, #unitSelect:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.suggestions-box {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    z-index: 100;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-item {
+    padding: 12px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+}
+
+.suggestion-item:hover {
+    background: #f8f9fa;
+}
+
+.btn-primary {
+    padding: 14px 25px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    height: 50px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.btn-success, .btn-warning, .btn-info {
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.btn-success:hover, .btn-warning:hover, .btn-info:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+}
+
+.btn-info {
+    background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+}
+
+/* Current Items List */
+.current-items-section {
+    border: 2px solid #f0f0f0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.current-items-section h3 {
+    background: #f8f9fa;
+    padding: 15px 20px;
+    margin: 0;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.list-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 2fr 1fr;
+    padding: 12px 20px;
+    background: #e9ecef;
+    font-weight: 600;
+}
+
+.items-list {
+    min-height: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.empty-list-message {
+    text-align: center;
+    padding: 50px 20px;
+    color: #999;
+}
+
+.empty-list-message i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: #ddd;
+}
+
+.current-item {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 2fr 1fr;
+    padding: 15px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    align-items: center;
+}
+
+.current-item:hover {
+    background: #f8f9fa;
+}
+
+.item-actions-inline {
+    display: flex;
+    gap: 10px;
+}
+
+.inline-action-btn {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.inline-edit-btn {
+    background: #ffc107;
+    color: #333;
+}
+
+.inline-delete-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.list-footer {
+    background: #f8f9fa;
+    padding: 15px 20px;
+    text-align: right;
+    font-weight: 600;
+    color: #495057;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Style for preparation input */
+#preparationInput {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+#preparationInput:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+/* Modals */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h3 {
+    color: #333;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+}
+
+.btn-secondary {
+    padding: 12px 20px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+/* Footer */
+footer {
+    background: #f8f9fa;
+    padding: 20px;
+    text-align: center;
+    color: #666;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .main-app {
+        grid-template-columns: 1fr;
+    }
+    
+    .left-panel {
+        border-right: none;
+        border-bottom: 1px solid #e9ecef;
+    }
+}
+
+@media (max-width: 768px) {
+    .input-group {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .list-header, .current-item {
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        font-size: 0.9rem;
+    }
+    
+    .container {
+        margin: 10px;
+        border-radius: 15px;
+    }
+}

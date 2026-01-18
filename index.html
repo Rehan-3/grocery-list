@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery List Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-shopping-cart"></i> Grocery List Manager</h1>
+            <p class="subtitle">Create, manage, and export your grocery lists</p>
+        </header>
+
+        <div class="main-app">
+            <!-- LEFT PANEL: Saved Lists -->
+            <div class="left-panel">
+                <div class="create-new-section">
+                    <button id="createNewListBtn" class="create-btn">
+                        <i class="fas fa-plus-circle"></i> Create New List
+                    </button>
+                </div>
+
+                <div class="saved-lists-section">
+                    <h3><i class="fas fa-history"></i> Previously Saved Lists</h3>
+                    <div id="savedListsContainer">
+                        <!-- Saved lists will appear here -->
+                        <div class="no-lists-message">
+                            <i class="fas fa-clipboard-list"></i>
+                            <p>No saved lists yet. Create your first list!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL: List Creation/Editing -->
+            <div class="right-panel" id="rightPanel">
+                <div class="list-creation-section" id="listCreationSection" style="display: none;">
+                    <div class="current-list-header">
+                        <h2 id="currentListTitle">Untitled List</h2>
+                        <div class="list-actions-top">
+                            <button id="closeListBtn" class="btn-small">
+                                <i class="fas fa-times"></i> Close
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Input Section -->
+                    <div class="input-section">
+                        <div class="input-group">
+                            <div class="autocomplete-container">
+                                <input type="text" id="itemInput" placeholder="Enter item name (e.g., Milk, Apples)">
+                                <div id="suggestionsBox" class="suggestions-box"></div>
+                            </div>
+                            <input type="number" id="quantityInput" placeholder="Quantity" min="1" value="1">
+                            <div class="unit-container">
+                                <select id="unitSelect">
+                                    <option value="kg">kg</option>
+                                    <option value="g">g</option>
+                                    <option value="litre">litre</option>
+                                    <option value="ml">ml</option>
+                                    <option value="piece">piece</option>
+                                    <option value="packet">packet</option>
+                                    <option value="dozen">dozen</option>
+                                    <option value="पेंढी">पेंढी</option>
+                                </select>
+                            </div>
+                            <!-- NEW: Preparation input with autocomplete -->
+                        <div class="preparation-container autocomplete-container">
+                            <input type="text" id="preparationInput"
+                                placeholder="Preparation (e.g., chopped finely, paste)">
+                            <div id="preparationSuggestions" class="suggestions-box"></div>
+                        </div>
+                            <button id="addItemBtn" class="btn-primary">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button id="saveCurrentListBtn" class="btn-success">
+                            <i class="fas fa-save"></i> Save List
+                        </button>
+                        <button id="clearCurrentListBtn" class="btn-warning">
+                            <i class="fas fa-broom"></i> Clear List
+                        </button>
+                        <button id="downloadPdfBtn" class="btn-info">
+                            <i class="fas fa-file-pdf"></i> Download PDF
+                        </button>
+                    </div>
+
+                    <!-- Current Items List -->
+                    <div class="current-items-section">
+                        <h3><i class="fas fa-list"></i> Current Items</h3>
+                        <div class="list-header">
+                            <span class="header-item">Item Name</span>
+                            <span class="header-qty">Quantity</span>
+                            <span class="header-unit">Unit</span>
+                            <span class="header-prep">Preparation</span>
+                            <span class="header-actions">Actions</span>
+                        </div>
+                        <div id="currentItemsList" class="items-list">
+                            <!-- Items will appear here -->
+                            <div class="empty-list-message">
+                                <i class="fas fa-shopping-basket"></i>
+                                <p>No items added yet. Start adding items above!</p>
+                            </div>
+                        </div>
+                        <div class="list-footer">
+                            <p id="itemCount">Total Items: 0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Welcome Message (Initially visible) -->
+                <div class="welcome-section" id="welcomeSection">
+                    <div class="welcome-content">
+                        <i class="fas fa-clipboard-check"></i>
+                        <h2>Welcome to Grocery List Manager</h2>
+                        <p>Create a new list or select an existing one to get started.</p>
+                        <p class="features">
+                            <i class="fas fa-check"></i> Fast autocomplete suggestions<br>
+                            <i class="fas fa-check"></i> Multiple unit options<br>
+                            <i class="fas fa-check"></i> Save and edit lists<br>
+                            <i class="fas fa-check"></i> Export to PDF<br>
+                            <i class="fas fa-check"></i> Marathi typing support in PDF
+                        </p>
+                        <button id="startNewListBtn" class="btn-primary">
+                            <i class="fas fa-plus-circle"></i> Create Your First List
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create List Modal -->
+        <div id="createListModal" class="modal">
+            <div class="modal-content">
+                <h3><i class="fas fa-file-alt"></i> Name Your List</h3>
+                <input type="text" id="listNameInput" placeholder="e.g., Weekly Groceries, Vegetables List">
+                <div class="modal-actions">
+                    <button id="confirmCreateBtn" class="btn-success">Create List</button>
+                    <button id="cancelCreateBtn" class="btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit List Name Modal -->
+        <div id="editListNameModal" class="modal">
+            <div class="modal-content">
+                <h3><i class="fas fa-edit"></i> Edit List Name</h3>
+                <input type="text" id="editListNameInput" placeholder="Enter new list name">
+                <div class="modal-actions">
+                    <button id="confirmEditBtn" class="btn-success">Save Changes</button>
+                    <button id="cancelEditBtn" class="btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2024 Grocery List Manager • Supports English & Marathi</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
