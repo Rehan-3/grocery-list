@@ -625,9 +625,182 @@ footer {
         grid-template-columns: 2fr 1fr 1fr 1fr;
         font-size: 0.9rem;
     }
+
+    /* ============================================
+   MOBILE RESPONSIVE FIXES
+   ============================================ */
+
+/* Base mobile styles */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+        font-size: 14px;
+        overflow-x: hidden;
+    }
+    
+    /* Fix input boxes for mobile */
+    input, select, button {
+        font-size: 16px !important; /* Prevents iOS zoom */
+        min-height: 44px !important; /* Better touch target */
+        padding: 12px !important;
+        margin: 5px 0 !important;
+        box-sizing: border-box;
+    }
+    
+    /* Fix the input form layout */
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .input-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        width: 100%;
+    }
+    
+    /* Make each input field take appropriate space */
+    #itemInput {
+        flex: 1;
+        min-width: 150px;
+    }
+    
+    #quantityInput {
+        width: 80px;
+    }
+    
+    #unitSelect {
+        width: 100px;
+    }
+    
+    #preparationInput {
+        flex: 1;
+        min-width: 150px;
+    }
+    
+    /* Fix buttons layout */
+    .button-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin: 20px 0;
+    }
+    
+    .button-group button {
+        flex: 1;
+        min-width: 120px;
+        font-size: 14px !important;
+        padding: 12px 8px !important;
+    }
+    
+    /* Fix current items table for mobile */
+    .current-item {
+        display: grid;
+        grid-template-columns: 1fr 0.5fr 0.5fr 1fr auto;
+        gap: 8px;
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+        font-size: 13px;
+        align-items: center;
+    }
+    
+    /* Make headers match grid */
+    .list-header {
+        display: grid;
+        grid-template-columns: 1fr 0.5fr 0.5fr 1fr auto;
+        gap: 8px;
+        padding: 12px;
+        background: #f5f5f5;
+        font-weight: bold;
+        font-size: 12px;
+    }
+    
+    /* Fix long text overflow */
+    .item-name, .item-preparation {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    /* Fix action buttons */
+    .item-actions-inline {
+        display: flex;
+        gap: 5px;
+    }
+    
+    .inline-action-btn {
+        padding: 6px 8px !important;
+        font-size: 11px !important;
+        min-height: 32px !important;
+    }
+    
+    /* Fix modals for mobile */
+    .modal-content {
+        width: 90% !important;
+        margin: 10% auto !important;
+        padding: 20px !important;
+    }
+    
+    /* Fix saved lists */
+    .saved-list-item {
+        padding: 12px !important;
+        margin-bottom: 10px !important;
+    }
+    
+    .list-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 10px;
+    }
+    
+    .action-btn-small {
+        padding: 8px 10px !important;
+        font-size: 12px !important;
+        flex: 1;
+        min-width: 60px;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 480px) {
+    .current-item {
+        grid-template-columns: 1fr 0.4fr 0.4fr 1fr auto;
+        gap: 5px;
+        font-size: 12px;
+        padding: 8px;
+    }
+    
+    .list-header {
+        grid-template-columns: 1fr 0.4fr 0.4fr 1fr auto;
+        gap: 5px;
+        padding: 8px;
+        font-size: 11px;
+    }
+    
+    .button-group button {
+        min-width: 100px;
+        font-size: 12px !important;
+        padding: 10px 5px !important;
+    }
+    
+    /* Stack buttons vertically on very small screens */
+    .button-group {
+        flex-direction: column;
+    }
+    
+    .button-group button {
+        width: 100%;
+    }
+}
     
     .container {
         margin: 10px;
         border-radius: 15px;
     }
+
 }
