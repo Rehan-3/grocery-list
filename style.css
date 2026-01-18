@@ -4,7 +4,7 @@
     padding: 0;
     box-sizing: border-box;
 }
-
+ 
 body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -444,7 +444,7 @@ header h1 {
 
 .list-header {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 2fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
     padding: 12px 20px;
     background: #e9ecef;
     font-weight: 600;
@@ -470,7 +470,7 @@ header h1 {
 
 .current-item {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 2fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
     padding: 15px 20px;
     border-bottom: 1px solid #f0f0f0;
     align-items: center;
@@ -514,21 +514,6 @@ header h1 {
     font-weight: 600;
     color: #495057;
     border-top: 1px solid #dee2e6;
-}
-
-/* Style for preparation input */
-#preparationInput {
-    width: 100%;
-    padding: 14px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s;
-}
-
-#preparationInput:focus {
-    outline: none;
-    border-color: #667eea;
 }
 
 /* Modals */
@@ -622,7 +607,7 @@ footer {
     }
     
     .list-header, .current-item {
-        grid-template-columns: 2fr 1fr 1fr 1fr;
+        grid-template-columns: 2fr 1fr 1fr auto;
         font-size: 0.9rem;
     }
 
@@ -676,11 +661,6 @@ footer {
         width: 100px;
     }
     
-    #preparationInput {
-        flex: 1;
-        min-width: 150px;
-    }
-    
     /* Fix buttons layout */
     .button-group {
         display: flex;
@@ -700,7 +680,7 @@ footer {
     /* Fix current items table for mobile */
     .current-item {
         display: grid;
-        grid-template-columns: 1fr 0.5fr 0.5fr 1fr auto;
+        grid-template-columns: 1fr 0.5fr 0.5fr auto;
         gap: 8px;
         padding: 12px;
         border-bottom: 1px solid #eee;
@@ -711,7 +691,7 @@ footer {
     /* Make headers match grid */
     .list-header {
         display: grid;
-        grid-template-columns: 1fr 0.5fr 0.5fr 1fr auto;
+        grid-template-columns: 1fr 0.5fr 0.5fr auto;
         gap: 8px;
         padding: 12px;
         background: #f5f5f5;
@@ -720,7 +700,7 @@ footer {
     }
     
     /* Fix long text overflow */
-    .item-name, .item-preparation {
+    .item-name {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -769,14 +749,14 @@ footer {
 /* Extra small phones */
 @media (max-width: 480px) {
     .current-item {
-        grid-template-columns: 1fr 0.4fr 0.4fr 1fr auto;
+        grid-template-columns: 1fr 0.4fr 0.4fr auto;
         gap: 5px;
         font-size: 12px;
         padding: 8px;
     }
     
     .list-header {
-        grid-template-columns: 1fr 0.4fr 0.4fr 1fr auto;
+        grid-template-columns: 1fr 0.4fr 0.4fr auto;
         gap: 5px;
         padding: 8px;
         font-size: 11px;
