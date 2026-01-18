@@ -1,7 +1,7 @@
 // ============================================
 // GROCERY LIST MANAGER - COMPLETE SOLUTION
 // ============================================
-
+ 
 // State Management
 let savedLists = [];
 let currentList = {
@@ -12,7 +12,6 @@ let currentList = {
     updatedAt: null
 };
 let previousItems = new Set();
-let previousPreparations = new Set();
 let currentEditListId = null;
 
 // DOM Elements
@@ -71,12 +70,6 @@ function loadSavedData() {
         savedLists = JSON.parse(savedListsData);
     }
     
-    // Load previous preparations
-    const previousPreparationsData = localStorage.getItem('groceryPreviousPreparations');
-    if (previousPreparationsData) {
-        previousPreparations = new Set(JSON.parse(previousPreparationsData));
-    }
-
     // Load previous items for autocomplete
     const previousItemsData = localStorage.getItem('groceryPreviousItems');
     if (previousItemsData) {
@@ -88,7 +81,6 @@ function loadSavedData() {
 function saveData() {
     localStorage.setItem('grocerySavedLists', JSON.stringify(savedLists));
     localStorage.setItem('groceryPreviousItems', JSON.stringify([...previousItems]));
-    localStorage.setItem('groceryPreviousPreparations', JSON.stringify([...previousPreparations])); 
 }
 
 // Setup all event listeners
@@ -291,7 +283,6 @@ function addItemToList() {
     const itemName = elements.itemInput.value.trim();
     const quantity = parseInt(elements.quantityInput.value) || 1;
     const unit = elements.unitSelect.value;
-    const preparation = document.getElementById('preparationInput').value.trim();
     
     if (!itemName) {
         alert('Please enter an ingredient name');
@@ -303,17 +294,11 @@ function addItemToList() {
         id: Date.now(),
         name: itemName,
         quantity: quantity,
-        unit: unit,
-        preparation: preparation
+        unit: unit
     });
     
     // Add to previous items for autocomplete
     previousItems.add(itemName);
-    
-    // Add to previous preparations for autocomplete
-    if (preparation) {
-        previousPreparations.add(preparation);
-    }
     
     saveData();
     
@@ -321,9 +306,7 @@ function addItemToList() {
     elements.itemInput.value = '';
     elements.quantityInput.value = 1;
     elements.unitSelect.value = 'kg';
-    document.getElementById('preparationInput').value = '';
     elements.suggestionsBox.style.display = 'none';
-    document.getElementById('preparationSuggestions').style.display = 'none';
     
     // Refresh display
     renderCurrentItems();
@@ -349,7 +332,6 @@ function editItemInList(itemId) {
     elements.itemInput.value = item.name;
     elements.quantityInput.value = item.quantity;
     elements.unitSelect.value = item.unit;
-    document.getElementById('preparationInput').value = item.preparation || '';
     elements.itemInput.focus();
 }
 
@@ -368,13 +350,12 @@ function renderCurrentItems() {
         return;
     }
     
-    // Create items HTML with preparation column
+    // Create items HTML (4 columns: Item, Quantity, Unit, Actions)
     const itemsHtml = currentList.items.map((item, index) => `
         <div class="current-item" data-item-id="${item.id}">
             <span class="item-name">${item.name}</span>
             <span class="item-quantity">${item.quantity}</span>
             <span class="item-unit">${item.unit}</span>
-            <span class="item-preparation">${item.preparation || '-'}</span>
             <div class="item-actions-inline">
                 <button class="inline-action-btn inline-edit-btn" onclick="editItemInList(${item.id})">
                     <i class="fas fa-edit"></i> Edit
@@ -394,7 +375,6 @@ function renderCurrentItems() {
 // AUTOCOMPLETE FUNCTIONS
 // ============================================
 
-// Update the showAutocompleteSuggestions function to handle Marathi better
 function showAutocompleteSuggestions() {
     const input = elements.itemInput.value;
     const suggestionsBox = elements.suggestionsBox;
@@ -435,47 +415,6 @@ function showAutocompleteSuggestions() {
             elements.itemInput.value = suggestion.getAttribute('data-item');
             suggestionsBox.style.display = 'none';
             elements.quantityInput.focus();
-        });
-    });
-}
-
-// Add autocomplete for preparation input
-document.getElementById('preparationInput').addEventListener('input', showPreparationSuggestions);
-
-function showPreparationSuggestions() {
-    const input = document.getElementById('preparationInput').value;
-    const suggestionsBox = document.getElementById('preparationSuggestions');
-    
-    if (!input) {
-        suggestionsBox.style.display = 'none';
-        return;
-    }
-    
-    const inputLower = input.toLowerCase();
-    
-    // Filter previous preparations
-    const filtered = [...previousPreparations].filter(prep => 
-        prep.toLowerCase().includes(inputLower)
-    ).slice(0, 8);
-    
-    if (filtered.length === 0) {
-        suggestionsBox.style.display = 'none';
-        return;
-    }
-    
-    suggestionsBox.innerHTML = filtered.map(prep => `
-        <div class="suggestion-item" data-prep="${prep}">
-            ${prep}
-        </div>
-    `).join('');
-    
-    suggestionsBox.style.display = 'block';
-    
-    // Add click handlers to suggestions
-    document.querySelectorAll('#preparationSuggestions .suggestion-item').forEach(suggestion => {
-        suggestion.addEventListener('click', () => {
-            document.getElementById('preparationInput').value = suggestion.getAttribute('data-prep');
-            suggestionsBox.style.display = 'none';
         });
     });
 }
@@ -648,7 +587,7 @@ function updateListName() {
 }
 
 // ============================================
-// PDF GENERATION FUNCTIONS - UPDATED FOR 5 COLUMNS
+// PDF GENERATION FUNCTIONS - UPDATED FOR 4 COLUMNS
 // ============================================
 
 // Download PDF with proper Marathi support
@@ -669,7 +608,7 @@ async function downloadPdf() {
         
         // Check if list contains Marathi text
         const hasMarathiText = currentList.items.some(item => 
-            containsMarathi(item.name) || containsMarathi(item.unit) || containsMarathi(item.preparation)
+            containsMarathi(item.name) || containsMarathi(item.unit)
         ) || containsMarathi(currentList.name);
         
         // Method 1: Try to use html2canvas for perfect rendering
@@ -705,23 +644,22 @@ async function downloadPdf() {
                 doc.text(`Total Items: ${currentList.items.length}`, 180, y, { align: 'right' });
                 y += 15;
                 
-                // Table header with 5 columns
+                // Table header with 4 columns
                 doc.setFillColor(240, 240, 240);
                 doc.rect(15, y, 180, 10, 'F');
                 y += 7;
                 
-                // 5 COLUMN HEADERS
+                // 4 COLUMN HEADERS (Item, Qty, Unit, #)
                 doc.text('#', 20, y);
                 doc.text('Item', 35, y);
-                doc.text('Qty', 90, y);
-                doc.text('Unit', 110, y);
-                doc.text('Prep', 140, y); // NEW PREPARATION COLUMN
+                doc.text('Qty', 110, y);
+                doc.text('Unit', 130, y);
                 y += 10;
                 
                 doc.line(15, y, 195, y);
                 y += 10;
                 
-                // Items with 5 columns
+                // Items with 4 columns
                 currentList.items.forEach((item, index) => {
                     if (y > 270) {
                         doc.addPage();
@@ -730,9 +668,8 @@ async function downloadPdf() {
                     
                     doc.text((index + 1).toString(), 20, y);
                     doc.text(item.name, 35, y);
-                    doc.text(item.quantity.toString(), 90, y);
-                    doc.text(item.unit, 110, y);
-                    doc.text(item.preparation || '-', 140, y); // NEW PREPARATION DATA
+                    doc.text(item.quantity.toString(), 110, y);
+                    doc.text(item.unit, 130, y);
                     
                     y += 10;
                 });
@@ -745,7 +682,7 @@ async function downloadPdf() {
                 doc.text('For proper Marathi display, please use the HTML print option.', 105, y, { align: 'center' });
                 
             } else {
-                // For English text with 5 columns
+                // For English text with 4 columns
                 // Title
                 doc.text(currentList.name, 105, 20, { align: 'center' });
                 
@@ -754,21 +691,20 @@ async function downloadPdf() {
                 doc.text(`Created: ${new Date().toLocaleDateString()}`, 15, 35);
                 doc.text(`Total Items: ${currentList.items.length}`, 180, 35, { align: 'right' });
                 
-                // Table header with 5 columns
+                // Table header with 4 columns
                 doc.setFillColor(240, 240, 240);
                 doc.rect(15, 45, 180, 10, 'F');
                 
                 doc.setFontSize(12);
                 doc.setTextColor(0, 0, 0);
                 
-                // 5 COLUMN HEADERS (ADJUSTED FOR SPACING)
+                // 4 COLUMN HEADERS
                 doc.text('#', 20, 52);
                 doc.text('Item', 40, 52);
-                doc.text('Qty', 100, 52);
-                doc.text('Unit', 120, 52);
-                doc.text('Preparation', 160, 52); // NEW COLUMN
+                doc.text('Qty', 120, 52);
+                doc.text('Unit', 140, 52);
                 
-                // Items with 5 columns
+                // Items with 4 columns
                 let yPos = 65;
                 currentList.items.forEach((item, index) => {
                     if (yPos > 270) {
@@ -784,9 +720,8 @@ async function downloadPdf() {
                     doc.setFontSize(11);
                     doc.text((index + 1).toString(), 20, yPos);
                     doc.text(item.name, 40, yPos);
-                    doc.text(item.quantity.toString(), 100, yPos);
-                    doc.text(item.unit, 120, yPos);
-                    doc.text(item.preparation || '-', 160, yPos); // NEW PREPARATION DATA
+                    doc.text(item.quantity.toString(), 120, yPos);
+                    doc.text(item.unit, 140, yPos);
                     
                     yPos += 10;
                 });
@@ -841,7 +776,7 @@ async function generatePdfWithCanvas() {
         color: black;
     `;
     
-    // Create HTML content with 5 columns
+    // Create HTML content with 4 columns
     tempDiv.innerHTML = `
         <div style="text-align: center; margin-bottom: 30px;">
             <h1 style="font-size: 28px; margin: 0; color: #333;">${escapeHtml(currentList.name)}</h1>
@@ -858,7 +793,6 @@ async function generatePdfWithCanvas() {
                     <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Item Name</th>
                     <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Quantity</th>
                     <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Unit</th>
-                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Preparation</th> <!-- NEW COLUMN -->
                 </tr>
             </thead>
             <tbody>
@@ -868,7 +802,6 @@ async function generatePdfWithCanvas() {
                         <td style="padding: 10px; border-bottom: 1px solid #eee; font-family: 'Noto Sans Devanagari', Arial, sans-serif;">${escapeHtml(item.name)}</td>
                         <td style="padding: 10px; border-bottom: 1px solid #eee;">${item.quantity}</td>
                         <td style="padding: 10px; border-bottom: 1px solid #eee;">${escapeHtml(item.unit)}</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #eee;">${escapeHtml(item.preparation || '-')}</td> <!-- NEW PREPARATION DATA -->
                     </tr>
                 `).join('')}
             </tbody>
@@ -986,7 +919,6 @@ function downloadHtmlVersion() {
                     <th>Item Name</th>
                     <th>Quantity</th>
                     <th>Unit</th>
-                    <th>Preparation</th> <!-- NEW COLUMN -->
                 </tr>
             </thead>
             <tbody>
@@ -996,7 +928,6 @@ function downloadHtmlVersion() {
                         <td style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">${escapeHtml(item.name)}</td>
                         <td>${item.quantity}</td>
                         <td>${escapeHtml(item.unit)}</td>
-                        <td>${escapeHtml(item.preparation || '-')}</td> <!-- NEW PREPARATION DATA -->
                     </tr>
                 `).join('')}
             </tbody>
